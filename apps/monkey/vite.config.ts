@@ -1,9 +1,9 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
-import monkey, { cdn, util } from 'vite-plugin-monkey'
-import AutoImport from 'unplugin-auto-import/vite'
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import { defineConfig } from 'vite'
+import monkey, { cdn, util } from 'vite-plugin-monkey'
 
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
@@ -61,7 +61,6 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
-          'https://weibo.com/n/*',
         ],
       },
       server: {
@@ -77,7 +76,7 @@ export default defineConfig({
             'https://unpkg.com/vue-demi@latest/lib/index.iife.js',
             version => `https://unpkg.com/pinia@${version}/dist/pinia.iife.js`,
           ],
-          // 'naive-ui': cdn.unpkg('naive-ui', 'dist/index.prod.js'),
+          'naive-ui': cdn.unpkg('naive', 'dist/index.prod.js'),
           'file-saver': [
             'saveAs',
             _ => 'https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js',

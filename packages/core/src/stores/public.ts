@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia'
-import { parseOldPost } from '@shared'
 import type { UID, UserInfo } from '@shared'
+import { parseOldPost } from '@shared'
+import { destr } from 'destr'
+import { defineStore } from 'pinia'
 import { DB_VERSION, IDB } from '../utils/storage'
 
 export const usePublicStore = defineStore('public', () => {
@@ -15,9 +16,23 @@ export const usePublicStore = defineStore('public', () => {
     if (typeof localStorage === 'undefined')
       return
 
-    users.value.length && localStorage.setItem('users', JSON.stringify(users.value))
-    curUid.value && localStorage.setItem('curUid', curUid.value)
+    if (users.value.length) {
+      localStorage.setItem('users', JSON.stringify(users.value))
+    }
+    if (curUid.value) {
+      localStorage.setItem('curUid', curUid.value)
+    }
   })
+
+  function load() {
+    const _users = localStorage.getItem('users') || '[]'
+    const _curUid = localStorage.getItem('curUid') || '0'
+
+    users.value = destr(_users)
+    curUid.value = _curUid
+
+    console.log('Load users', users.value, curUid.value)
+  }
 
   function addUser(user: UserInfo | null | undefined) {
     if (!user)
@@ -94,5 +109,6 @@ export const usePublicStore = defineStore('public', () => {
     rmUser,
     migrateUser,
     importUser,
+    load,
   }
 })

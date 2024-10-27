@@ -11,7 +11,6 @@
     "paths": {
       "@core/*": ["packages/core/src/*"],
       "@shared": ["packages/shared/src/index.ts"],
-      "@database/*": ["packages/database/src/*"],
       "@ui/*": ["packages/ui/src/*"]
     },
     "types": [
@@ -31,7 +30,8 @@
     "*.ts",
     "*.tsx",
     "*.d.ts",
-    "apps/web/.nuxt/imports.d.ts"
+    "apps/web/.nuxt/imports.d.ts",
+    "eslint.config.js"
   ],
   "exclude": [
     "dist",

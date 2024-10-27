@@ -1,11 +1,12 @@
+import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import type { Post, UID, UserBio, UserInfo } from '@shared'
 import { EmptyIDB, IDB } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
   const followings = shallowRef<UserBio[]>([])
+  const allImages: Album[] = []
 
   const idb = ref(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
@@ -206,11 +207,43 @@ export const usePostStore = defineStore('post', () => {
     return posts
   }
 
+  async function getById(id: string) {
+    await waitIDB()
+    return await idb.value.getDBPostById(id)
+  }
+
   async function getFollowings() {
     await waitIDB()
     return await idb.value
       .getFollowings()
       .then(data => data.sort((a, b) => a.name.localeCompare(b.name)))
+  }
+
+  /**
+   * 获取所有图片，以月份分组
+   */
+  async function getAllImgs() {
+    if (allImages.length > 0)
+      return allImages
+
+    await waitIDB()
+    const imgs = await idb.value.getImgs()
+
+    console.log('Get imgs', imgs)
+
+    const result: Album[] = []
+
+    for (const { img, date, id } of imgs) {
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      const key = `${year}年${month.toString().padStart(2, '0')}月`
+
+      const data = { url: img, id, date: key }
+      result.push(data)
+    }
+    allImages.push(...result)
+
+    return result
   }
 
   return {
@@ -245,5 +278,7 @@ export const usePostStore = defineStore('post', () => {
     searchPost,
     searchAndTime,
     getFollowings,
+    getAllImgs,
+    getById,
   }
 })

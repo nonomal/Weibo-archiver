@@ -1,8 +1,8 @@
-import { defineStore, storeToRefs } from 'pinia'
-import saveAs from 'file-saver'
-
 import type { Post, UID, UserBio, UserInfo } from '@shared'
 import { EmptyIDB, IDB } from '@core/utils/storage'
+
+import saveAs from 'file-saver'
+import { defineStore, storeToRefs } from 'pinia'
 import { useConfigStore } from './configStore'
 
 export const usePostStore = defineStore('post', () => {
@@ -105,13 +105,15 @@ export const usePostStore = defineStore('post', () => {
     const posts = await getAll()
     console.log('导出的数量：', posts.length)
 
-    const followings = await idb.value.getFollowings()
+    const followings = config.value.weiboOnly
+      ? []
+      : await idb.value.getFollowings()
 
     const res = await exportData(posts, userInfo.value, followings)
     if (!res)
       return
     const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
-    saveAs(scripts, 'scripts.zip')
+    saveAs(scripts, 'weibo-archiver-scripts.zip')
   }
 
   return {

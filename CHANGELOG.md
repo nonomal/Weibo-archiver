@@ -1,5 +1,156 @@
 # Changelog
 
+## v0.4.3...v0.4.4
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.3...main)
+
+### 🩹 Fixes
+
+- **scripts:** Add config & concurrency for download ([048f8ce](https://github.com/Chilfish/Weibo-archiver/commit/048f8ce))
+
+### 📦 Build
+
+- Update deps ([a7886c2](https://github.com/Chilfish/Weibo-archiver/commit/a7886c2))
+- **cli:** For publish ([8cef6c2](https://github.com/Chilfish/Weibo-archiver/commit/8cef6c2))
+
+### 🎨 Styles
+
+- Update eslint formats ([3144ccb](https://github.com/Chilfish/Weibo-archiver/commit/3144ccb))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
+## v0.4.2...v0.4.3
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.2...v0.4.3)
+
+### 🚀 Enhancements
+
+- **web:** Add commit metadata ([394491d](https://github.com/Chilfish/Weibo-archiver/commit/394491d))
+- **web:** Add album to view all images ([88ec83b](https://github.com/Chilfish/Weibo-archiver/commit/88ec83b))
+- **web:** Show post detail on clicked ([f667f3b](https://github.com/Chilfish/Weibo-archiver/commit/f667f3b))
+
+### 🩹 Fixes
+
+- **web:** Sort search results in descending order by date ([0bb605a](https://github.com/Chilfish/Weibo-archiver/commit/0bb605a))
+- **style:** Reformat code with linting adjustments ([1e2e086](https://github.com/Chilfish/Weibo-archiver/commit/1e2e086))
+- **web:** Optimize image gallery aspect ratio for different device sizes ([5273dc6](https://github.com/Chilfish/Weibo-archiver/commit/5273dc6))
+- **web:** Post styles ([b808de8](https://github.com/Chilfish/Weibo-archiver/commit/b808de8))
+- **web:** Image style in comments ([fcaaf6c](https://github.com/Chilfish/Weibo-archiver/commit/fcaaf6c))
+- **web:** Styles and infos ([26dc3b4](https://github.com/Chilfish/Weibo-archiver/commit/26dc3b4))
+- **parse:** Open link in new tab ([a029109](https://github.com/Chilfish/Weibo-archiver/commit/a029109))
+- **web:** Home page & post page ([53f842c](https://github.com/Chilfish/Weibo-archiver/commit/53f842c))
+- **web:** Loading album ([8fe1261](https://github.com/Chilfish/Weibo-archiver/commit/8fe1261))
+- **web:** Update nuxt config ([47c3014](https://github.com/Chilfish/Weibo-archiver/commit/47c3014))
+
+### 📦 Build
+
+- Update deps ([85710d2](https://github.com/Chilfish/Weibo-archiver/commit/85710d2))
+- Better configs ([5b7c1b3](https://github.com/Chilfish/Weibo-archiver/commit/5b7c1b3))
+- Update deps ([1caf447](https://github.com/Chilfish/Weibo-archiver/commit/1caf447))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
+## v0.4.1...v0.4.2
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.1...v0.4.2)
+
+### 🩹 Fixes
+
+- **monkey:** Fetch user info api changed ([5549d5f](https://github.com/Chilfish/Weibo-archiver/commit/5549d5f))
+- **monkey:** Load app version from .env ([d5a0058](https://github.com/Chilfish/Weibo-archiver/commit/d5a0058))
+- **web:** Better empty post page ([a42d6c8](https://github.com/Chilfish/Weibo-archiver/commit/a42d6c8))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
+## v0.4.0...v0.4.1
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.0...v0.4.1)
+
+### 🩹 Fixes
+
+- **web:** Psot ui details ([008335e](https://github.com/Chilfish/Weibo-archiver/commit/008335e))
+- **web:** 图片可以使用微博原链接了 ([fd85c3f](https://github.com/Chilfish/Weibo-archiver/commit/fd85c3f))
+- **monkey:** Start and end of date range ([ac683fc](https://github.com/Chilfish/Weibo-archiver/commit/ac683fc))
+- **monkey:** Set version ([455ad6b](https://github.com/Chilfish/Weibo-archiver/commit/455ad6b))
+
+### 📦 Build
+
+- Update deps ([b2eba24](https://github.com/Chilfish/Weibo-archiver/commit/b2eba24))
+- Update deps ([bf6999b](https://github.com/Chilfish/Weibo-archiver/commit/bf6999b))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
+## v0.4.0
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.13...v0.4.0)
+
+### 🚀 Enhancements
+
+- Support user's remark (web) ([d672200](https://github.com/Chilfish/Weibo-archiver/commit/d672200))
+
+### 🩹 Fixes
+
+- Build error ([83521fb](https://github.com/Chilfish/Weibo-archiver/commit/83521fb))
+- **web:** Css use `@apply` instead of `--uno` ([87d7eac](https://github.com/Chilfish/Weibo-archiver/commit/87d7eac))
+- **web:** Self-built hosting input cannot gain focus ([ff58836](https://github.com/Chilfish/Weibo-archiver/commit/ff58836))
+
+### 💅 Refactors
+
+- ⚠️  Temporarily remove /desktop app ([#50](https://github.com/Chilfish/Weibo-archiver/pull/50))
+
+### 📦 Build
+
+- Update deps ([64a59a4](https://github.com/Chilfish/Weibo-archiver/commit/64a59a4))
+- Update deps ([331dffc](https://github.com/Chilfish/Weibo-archiver/commit/331dffc))
+- Fix missing peer dep dependency in CI ([0e0074a](https://github.com/Chilfish/Weibo-archiver/commit/0e0074a))
+
+### 🏡 Chore
+
+- **docs:** Update README ([c4c02b2](https://github.com/Chilfish/Weibo-archiver/commit/c4c02b2))
+- Lint files ([cd3907d](https://github.com/Chilfish/Weibo-archiver/commit/cd3907d))
+
+### 🤖 CI
+
+- **build:** Fix setup pnpm ([7ff82ef](https://github.com/Chilfish/Weibo-archiver/commit/7ff82ef))
+- **build:** Fix installs ([6fa87c2](https://github.com/Chilfish/Weibo-archiver/commit/6fa87c2))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Temporarily remove /desktop app ([#50](https://github.com/Chilfish/Weibo-archiver/pull/50))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
+## v0.3.13
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.12...v0.3.13)
+
+### 🩹 Fixes
+
+- **ci:** Rename the title [no ci] ([20567bf](https://github.com/Chilfish/Weibo-archiver/commit/20567bf))
+- **cli:** ConfigFile path resolve ([#49](https://github.com/Chilfish/Weibo-archiver/pull/49))
+- **monkey:** 可以选择不导出关注列表 ([05b9345](https://github.com/Chilfish/Weibo-archiver/commit/05b9345))
+- **monkey:** 不再匹配 /n/username ([72b7e59](https://github.com/Chilfish/Weibo-archiver/commit/72b7e59))
+
+### 📦 Build
+
+- Update deps ([43aceb6](https://github.com/Chilfish/Weibo-archiver/commit/43aceb6))
+- Don't specify the packageManager version ([8a7f683](https://github.com/Chilfish/Weibo-archiver/commit/8a7f683))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+- Rainy ([@geekrainy](http://github.com/geekrainy))
+
 ## v0.3.12
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.11...v0.3.12)

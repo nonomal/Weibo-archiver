@@ -9,10 +9,15 @@ export function replaceImg(img: string, forceCdn = false) {
   if (!img)
     return imgViewSrc
 
-  if (img.includes('data:image') || img.startsWith(imgCdn))
-    return img
-
   const imgHost = storage<string>('imgHost', '/')
+
+  if (
+    img.includes('data:image') // base64
+    || img.startsWith(imgCdn) // 使用 ipfs cdn
+    || imgHost === 'weibo'// 使用微博官方链接
+  ) {
+    return img
+  }
 
   // 使用 ipfs cdn
   if (imgHost === imgCdn || forceCdn) {
@@ -25,7 +30,7 @@ export function replaceImg(img: string, forceCdn = false) {
   }
 
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
-  const prefix = img.match(/^(?:https?:\/\/)?([^:\/\n]+)/im)?.[1] // 域名
+  const prefix = img.match(/^(?:https?:\/\/)?([^:/\n]+)/im)?.[1] // 域名
 
   if (!prefix || !name)
     return img

@@ -39,8 +39,6 @@ export async function userDetail(
     },
   })
 
-  const _uid = data.verified_url.match(/(\d+)/)?.[1] ?? ''
-
   const detail = {
     createdAt: data.created_at,
     birthday: data.birthday,
@@ -49,7 +47,7 @@ export async function userDetail(
     birthday: string
   }
 
-  const info = await userInfo({ id: _uid })
+  const info = await userInfo({ id: uid })
   return {
     ...info,
     ...detail,
@@ -95,14 +93,20 @@ export async function getMyFollowings(
 }
 
 export async function isMe(uid: string) {
-  const [withoutUid, withUid] = await Promise.all([
-    weiFetch('/profile/detail'),
-    weiFetch('/profile/detail', {
-      params: { uid },
-    }),
-  ])
+  try {
+    const [withoutUid, withUid] = await Promise.all([
+      weiFetch('/profile/detail'),
+      weiFetch('/profile/detail', {
+        params: { uid },
+      }),
+    ])
 
-  return withUid.data.created_at === withoutUid.data.created_at
+    return withUid.data.created_at === withoutUid.data.created_at
+  }
+  catch (e) {
+    console.error('isMe error', e)
+    return false
+  }
 }
 
 export async function fetchFollowings(

@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
 import type { FetchOptions } from '@shared'
+import { useStorage } from '@vueuse/core'
+import { defineStore } from 'pinia'
 
 type Config = FetchOptions & {
   isMinimize: boolean
@@ -27,6 +27,7 @@ export const useConfigStore = defineStore('config', () => {
     hasFavorite: true,
     commentCount: 6,
     followingsOnly: false,
+    weiboOnly: false,
     startAt: now,
     endAt: now,
   }

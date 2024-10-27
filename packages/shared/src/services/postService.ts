@@ -65,8 +65,8 @@ export async function fetchRangePosts(
     params: {
       uid,
       page,
-      starttime: start / 1000,
-      endtime: end / 1000,
+      starttime: dayStart(start) / 1000,
+      endtime: dayEnd(end) / 1000,
       hasori: 1, // 是否包含原创
       hasret: hasRepost ? 1 : 0, // 是否包含转发
       hastext: 1, // 是否包含文字
@@ -149,7 +149,8 @@ export function fetchPosts(
     const { uid, startAt, endAt, hasRepost, curPage, isFetchAll } = fetchOptions()
     const page = curPage + 1
 
-    isBrowser && console.log(`正在获取第 ${page} 页`)
+    if (isBrowser)
+      console.log(`正在获取第 ${page} 页`)
 
     return isFetchAll
       ? await fetchAllPosts(uid, page)

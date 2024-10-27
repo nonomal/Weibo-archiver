@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
 import type { Post, PostData, UserBio, UserInfo } from '@shared'
-import { destr } from 'destr'
-import { useStorage } from '@vueuse/core'
-import { parseOldPost } from '@shared'
 import { imgCdn } from '@core/constants'
+import { parseOldPost } from '@shared'
+import { useStorage } from '@vueuse/core'
+import { destr } from 'destr'
+import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
+import { useRouter } from 'vue-router'
 
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
@@ -12,6 +13,7 @@ const customimgHost = useStorage('customimgHost', '')
 const postStore = usePostStore()
 const publicStore = usePublicStore()
 
+const router = useRouter()
 const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
@@ -92,6 +94,7 @@ async function paeseAndImport(_data: string) {
   user.postCount = postStore.total
 
   message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
+  router.push('/post')
 }
 
 function onImportData({ file }: UploadCustomRequestOptions) {
@@ -132,6 +135,7 @@ async function clearData() {
     publicStore.rmUser()
 
     message.success('清空成功')
+    router.push('/')
   }
   catch (e) {
     console.error(`清空失败: ${e}`)
@@ -159,20 +163,32 @@ async function clearData() {
             使用默认的 CDN（{{ imgCdn }}）
           </n-radio>
 
-          <n-radio :value="customimgHost">
-            <span>
+          <n-radio value="weibo">
+            使用微博原图（需配合
+            <a
+              href="https://chromewebstore.google.com/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh"
+              target="_blank"
+              title="插件市场"
+            >
+              Header Editor
+            </a>
+            插件）
+          </n-radio>
+
+          <div>
+            <n-radio :value="customimgHost">
               使用自建图床链接（指向图片所在的目录）
-            </span>
+            </n-radio>
             <n-input
               v-model:value="customimgHost"
-              class="mt-2"
+              class="mt-2 max-w-80%"
               placeholder="请输入"
             >
               <template #prefix>
                 <i class="i-tabler:link icon" />
               </template>
             </n-input>
-          </n-radio>
+          </div>
         </n-radio-group>
       </n-form-item>
 

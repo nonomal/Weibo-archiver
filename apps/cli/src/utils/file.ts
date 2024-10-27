@@ -1,7 +1,7 @@
-import { rename, writeFile } from 'node:fs/promises'
 import { createReadStream, existsSync } from 'node:fs'
-import readline from 'node:readline'
+import { rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import readline from 'node:readline'
 
 export async function saveJson(
   savePath: string,
@@ -72,7 +72,7 @@ export async function getLastLine(
   try {
     return JSON.parse(lastLine)
   }
-  catch (e) {
+  catch {
     return null
   }
   finally {

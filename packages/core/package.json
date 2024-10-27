@@ -7,14 +7,15 @@
     "typecheck": "tsc --noEmit -p ./tsconfig.json"
   },
   "dependencies": {
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^11.1.0",
     "@weibo-archiver/shared": "workspace:^",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.13",
     "destr": "^2.0.3",
     "file-saver": "^2.0.5",
     "fuse.js": "^7.0.0",
     "idb": "^8.0.0",
-    "pinia": "^2.1.7",
-    "vue-router": "^4.3.0"
+    "pinia": "^2.2.4",
+    "vue": "^3.5.12",
+    "vue-router": "^4.4.5"
   }
 }

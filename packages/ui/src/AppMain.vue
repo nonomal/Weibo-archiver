@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {
-  NConfigProvider,
-  NMessageProvider,
   darkTheme,
   dateZhCN,
+  NConfigProvider,
+  NMessageProvider,
+  NModalProvider,
   zhCN,
 } from 'naive-ui'
 
@@ -17,8 +18,10 @@ const theme = computed(() => isInMonkey || !isDark.value ? null : darkTheme)
     :date-locale="dateZhCN"
     :theme
   >
-    <NMessageProvider>
-      <slot />
-    </NMessageProvider>
+    <NModalProvider>
+      <NMessageProvider>
+        <slot />
+      </NMessageProvider>
+    </NModalProvider>
   </NConfigProvider>
 </template>

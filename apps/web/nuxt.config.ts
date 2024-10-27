@@ -1,5 +1,17 @@
-import { fileURLToPath } from 'node:url'
+import { execSync } from 'node:child_process'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const commitHash = execSync('git rev-parse --short HEAD').toString().trimEnd()
+const commitUrl = `https://github.com/Chilfish/Weibo-archiver/commit/${commitHash}`
+
+const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd()
+const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd()
+
+process.env.VITE_GIT_COMMIT_DATE = commitDate
+process.env.VITE_GIT_COMMIT_HASH = commitHash
+process.env.VITE_GIT_LAST_COMMIT_MESSAGE = lastCommitMessage
+process.env.VITE_GIT_COMMIT_URL = commitUrl
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const core = join(root, 'packages/core/src')
@@ -9,6 +21,7 @@ const ui = join(root, 'packages/ui/src')
 export default defineNuxtConfig({
   srcDir: 'src/',
   serverDir: 'server',
+
   dir: {
     public: '../public',
   },
@@ -32,6 +45,7 @@ export default defineNuxtConfig({
   alias: {
     '@core': core,
     '@shared': shared,
+    '@ui': ui,
   },
 
   imports: {
@@ -40,6 +54,7 @@ export default defineNuxtConfig({
       shared,
     ],
   },
+
   components: {
     dirs: [ui],
   },
@@ -70,19 +85,8 @@ export default defineNuxtConfig({
     },
     static: true,
     routeRules: {
-      '/': { redirect: '/post' },
-    },
-    prerender: {
-      crawlLinks: false,
-      routes: ['/post'],
-    },
-  },
-
-  vite: {
-    build: {
-      rollupOptions: {
-        external: ['conf'],
-      },
+      // '/': { redirect: '/post' },
+      '/docs': { redirect: 'https://docs.qq.com/doc/DTWttbXlMUGxZZnZq' },
     },
   },
 
@@ -107,7 +111,16 @@ export default defineNuxtConfig({
 
   typescript: {
     tsConfig: {
-      extends: join(root, 'tsconfig.json'),
+      compilerOptions: {
+        types: [
+          'naive-ui/volar',
+        ],
+      },
+      include: [
+        shared,
+        ui,
+        core,
+      ],
     },
   },
 
@@ -120,4 +133,6 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false,
   },
+
+  compatibilityDate: '2024-10-26',
 })

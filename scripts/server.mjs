@@ -1,9 +1,9 @@
-import * as http from 'node:http'
 import * as fs from 'node:fs'
+import * as http from 'node:http'
 import * as path from 'node:path'
+import { pipeline } from 'node:stream/promises'
 import { promisify } from 'node:util'
 import { createGzip } from 'node:zlib'
-import { pipeline } from 'node:stream/promises'
 
 const access = promisify(fs.access)
 const createReadStream = fs.createReadStream
@@ -31,7 +31,7 @@ const server = http.createServer(async (req, res) => {
 
     await pipeline(fileStream, compressStream, res)
   }
-  catch (err) {
+  catch {
     res.statusCode = 404
     res.end(`File not found: ${req.url}`)
   }

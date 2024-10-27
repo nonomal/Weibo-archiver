@@ -1,9 +1,9 @@
-import { homedir } from 'node:os'
-import { mkdir, writeFile } from 'node:fs/promises'
+import type { FetchOptions } from '@weibo-archiver/shared'
 import { existsSync } from 'node:fs'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { loadConfig } from 'c12'
-import type { FetchOptions } from '@weibo-archiver/shared'
 
 export const defaultSavePath = (uid: string) => join(homedir(), 'weibo-archiver', uid)
 export const defaultConfigFile = (uid: string) => join(defaultSavePath(uid), 'config.json')
@@ -18,24 +18,20 @@ export type Config = Omit<FetchOptions, 'name'> & {
    * @default ~/weibo-archiver/
    */
   savePath: string
-  /**
-   * 只爬取微博
-   */
-  weiboOnly: boolean
 }
 
 export async function getConfig(
   uid: string,
   savePath = defaultSavePath(uid),
 ) {
-  const configPath = join(savePath, 'config.json')
+  const configFile = 'config.json'
 
   if (!existsSync(savePath))
     await mkdir(savePath, { recursive: true })
 
   const config = await loadConfig<Config>({
     cwd: savePath,
-    configFile: configPath,
+    configFile,
     defaultConfig: {
       savePath,
       cookie: '',

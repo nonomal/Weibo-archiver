@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { defineCommand, runMain } from 'citty'
-import { consola } from 'consola'
-
-import { fetchFollowings, fetchPosts, userDetail } from '@weibo-archiver/shared'
 import type { UserBio } from '@weibo-archiver/shared'
 import type { Config } from './config'
+
+import { fetchFollowings, fetchPosts, userDetail } from '@weibo-archiver/shared'
+import { defineCommand, runMain } from 'citty'
+import { consola } from 'consola'
 import { getConfig, saveConfig } from './config'
 import {
   appendJson,
@@ -23,7 +23,7 @@ let config: Config
 const main = defineCommand({
   meta: {
     name: 'weibo-archiver',
-    version: '0.3.12',
+    version: '0.4.4',
     description: 'Weibo archiver 命令行版本',
   },
   args: {
@@ -119,7 +119,10 @@ const main = defineCommand({
 
     const { weiboOnly } = config
 
-    !weiboOnly && await getUserMeta()
+    if (!weiboOnly) {
+      await getUserMeta()
+    }
+
     await getWeibo()
 
     consola.success('全部任务完成')

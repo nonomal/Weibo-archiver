@@ -4,6 +4,7 @@ export interface User {
   uid: string
   name: string
   avatar: string
+  remark?: string // 备注
 }
 
 export type UserBio = User & {
@@ -83,4 +84,10 @@ export interface PostData {
   weibo: Post[]
   user: UserInfo
   followings: UserBio[]
+}
+
+export interface Album {
+  url: string
+  id: string
+  date: string
 }

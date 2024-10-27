@@ -1,4 +1,3 @@
-import PQueue from 'p-queue'
 import type {
   CardInfo,
   Comment,
@@ -7,12 +6,13 @@ import type {
   Post,
   UserBio,
 } from './types'
-import { fetchComments, fetchLongText } from './services'
+import PQueue from 'p-queue'
 import { delay } from '.'
+import { fetchComments, fetchLongText } from './services'
 
 export const weibo = 'https://weibo.com'
 
-export const link = (text: string, url = weibo) => `<a href="${url}">${text}</a>`
+export const link = (text: string, url = weibo) => `<a target="_blank" href="${url}">${text}</a>`
 
 /**
  * 解析正文，例如 @user => link(user, userUrl)
@@ -30,11 +30,11 @@ export function parseText(text?: string) {
       /<a[^>]*>(@[^<]+)<\/a>/g, // @用户
       (_, user) => link(`${user}`, `${weibo}/n/${user.replace('@', '')}`),
     )
-    .replace(/<img[^>]+alt="([^"]*)"[^>]*>/gm, (_, alt) => alt) // 表情图片
-    .replace(/<img[^>]*>/gm, '') // 图标
+    .replace(/<img[^>]+alt="([^"]*)"[^>]*>/g, (_, alt) => alt) // 表情图片
+    .replace(/<img[^>]*>/g, '') // 图标
     .replace(/(https:)?\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, __, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
 
-  const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/gm.exec(parsed)
+  const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/.exec(parsed)
   let textImg = null
 
   if (retweetImg && retweetImg[1]) {
@@ -155,6 +155,7 @@ export function parseFollowing(user: any) {
     name: user.screen_name,
     avatar: user.profile_image_url,
     bio: user.description,
+    remark: user.remark || undefined,
   } as UserBio
 }
 
@@ -184,6 +185,8 @@ export function parseOldPost(
 
 /**
  * 从返回的 api 中提取信息
+ * @param post 微博数据
+ * @param options 选项
  * @param isRepost 是否是转发，用在递归判断中
  */
 export async function postFilter(
@@ -204,7 +207,8 @@ export async function postFilter(
     const { text, textImg } = await fetchLongText(post)
     const imgs = includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : []
 
-    textImg && imgs.push(textImg)
+    if (textImg)
+      imgs.push(textImg)
 
     const postId = post.id
     const uid = post.user?.idstr || options.uid

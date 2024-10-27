@@ -1,9 +1,14 @@
-import { deleteDB, openDB } from 'idb'
-import Fuse from 'fuse.js'
-import dayjs from 'dayjs'
+import type {
+  Post,
+  UID,
+  UserBio,
+  UserInfo,
+} from '@shared'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
-import type { Post, UID, UserBio, UserInfo } from '@shared'
+import dayjs from 'dayjs'
+import Fuse from 'fuse.js'
+import { deleteDB, openDB } from 'idb'
 
 const POST_STORE = 'posts'
 const USER_STORE = 'user'
@@ -52,6 +57,7 @@ export async function checkDB(uid: number) {
 export class IDB {
   idb: Promise<IDBPDatabase<AppDB>>
   name: UID
+  posts: Post[] = []
 
   constructor(
     name: UID,
@@ -102,7 +108,8 @@ export class IDB {
 
     try {
       const target = (page - 1) * limit
-      target && await cursor.advance(target)
+      if (target)
+        await cursor.advance(target)
 
       while (cursor && posts.length < limit) {
         posts.push(cursor.value)
@@ -128,7 +135,8 @@ export class IDB {
 
     for (const time of times) {
       const post = await index.get(time)
-      post && posts.push(post)
+      if (post)
+        posts.push(post)
     }
 
     return posts
@@ -138,8 +146,18 @@ export class IDB {
    * 获取所有帖子
    */
   async getAllDBPosts() {
+    if (this.posts.length)
+      return this.posts
+
     const db = await this.idb
-    return await db.getAll(POST_STORE)
+    const posts = await db.getAll(POST_STORE)
+    this.posts = posts
+    return posts
+  }
+
+  async getDBPostById(id: string) {
+    const posts = await this.getAllDBPosts()
+    return posts.find(post => post.mblogid === id)
   }
 
   /**
@@ -246,8 +264,8 @@ export class IDB {
           .replace(/<[^>]+>/g, ' ') // 移除所有 HTML 标签
           .replace(/(undefined|查看图片|查看链接|转发微博)/, '')
           .replace(/&[a-z]+;/g, ' ') // 移除 HTML 实体字符
-          .replace(/[\s\n]+/g, ' ') // 移除多余的空白字符
-          .replace(/@[\u4E00-\u9FA5a-zA-Z0-9_-]+/g, '') // 移除 @ 用户名
+          .replace(/\s+/g, ' ') // 移除多余的空白字符
+          .replace(/@[\u4E00-\u9FA5\w-]+/g, '') // 移除 @ 用户名
           .trim(),
       }
     })
@@ -277,7 +295,9 @@ export class IDB {
           .map(t => searchToken.some(s => t.startsWith(s)) ? t : `'${t}`)
           .join(' ')
 
-        return fuse.search(query).map(r => r.item.time).sort()
+        return fuse.search(query)
+          .map(r => r.item.time)
+          .sort((a, b) => b - a) // 新帖子在前
       },
     }
   }
@@ -308,7 +328,8 @@ export class IDB {
 
     try {
       const target = (page - 1) * limit
-      target && await cursor.advance(target)
+      if (target)
+        await cursor.advance(target)
 
       while (cursor && posts.length < limit) {
         posts.push(cursor.value)
@@ -359,6 +380,33 @@ export class IDB {
     const db = await this.idb
     return await db.getAll(FLOWERINGS_STORE)
   }
+
+  async getImgs() {
+    const result: Album[] = []
+    const posts = await this.getAllDBPosts()
+
+    posts
+      .sort((a, b) => {
+        return dayjs(b.created_at).valueOf() - dayjs(a.created_at).valueOf()
+      }) // 新帖子在前
+      .forEach((post) => {
+        post.imgs.forEach((img) => {
+          result.push({
+            img,
+            date: new Date(post.created_at),
+            id: post.mblogid,
+          })
+        })
+      })
+
+    return result
+  }
+}
+
+interface Album {
+  img: string
+  id: string
+  date: Date
 }
 
 export type SeachResult = FuseResult<{
@@ -374,6 +422,7 @@ export class EmptyIDB extends IDB {
   async getDBPosts(_page = 1, _limit = 10) { return [] as Post[] }
   async getDBPostByTime(_times: number[]) { return [] as Post[] }
   async getAllDBPosts() { return [] as Post[] }
+  async getDBPostById(_id: string) { return {} as Post | undefined }
   async getPostCount() { return 0 }
   async clearDB() { }
   async getSize() { return '0' }
@@ -394,4 +443,5 @@ export class EmptyIDB extends IDB {
   async setUserInfo(_user: UserInfo): Promise<void> {}
   async addFollowings(_followings: UserBio[]): Promise<void> {}
   async getFollowings(): Promise<UserBio[]> { return [] }
+  async getImgs(): Promise<Album[]> { return [] }
 }

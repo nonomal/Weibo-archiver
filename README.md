@@ -9,6 +9,7 @@
     <img src="https://wakatime.com/badge/user/0842a71f-c026-4b09-8aa0-f8398b4c3423/project/3416f224-f0dc-4b08-805c-af30dbd396b2.svg" alt="wakatime">
     <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/chilfish/weibo-archiver">
     <img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/chilfish/weibo-archiver/total">
+    <img alt="beta build" src="https://github.com/Chilfish/Weibo-archiver/actions/workflows/beta-build.yml/badge.svg">
   </div>
 </div>
 
@@ -28,9 +29,10 @@
 
 更多操作细节可见 [使用教程]
 
+同时也支持 ClI 模式，可以在 [Node.js 官网] 下载安装 Node.js 后，使用 `npx weibo-archiver` 来启动，具体的使用方法可见 `npx weibo-archiver --help` 和 [README](apps/cli/README.md)
+
 > [!IMPORTANT]
-> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇暂时只接受改 bug 的 pr <br/>
-> 有关项目的进展路线等，可见 [项目的 Todo] 部分
+> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇
 
 如果想体验预览版，在 [actions] 中会自动构建每次提交的 beta 版本
 
@@ -58,24 +60,21 @@
 
 在 packages 目录下：
 
-- [/core](packages/core/) 包含了工具函数、pinia 等数据处理的核心
+- [/core](packages/core/) 包含了工具函数、数据处理的核心
 - [/ui](packages/ui/) 包含 UI 部分的组件代码
-- [/database](packages/database/) Desktop 的 Sqlite3 Drizzle-ORM
+- [/shared](packages/shared/) 不含 vue 的共用 lib 库
 
 在 apps 目录下，为最终的应用
 
 - [/web](apps/web/) 是用于最终查看微博数据的网页，目前托管在 [vercel] 上
 - [/monkey](apps/monkey/) 用于打包成油猴脚本
 - [/cli](apps/cli) Nodejs 命令行版本
-- [/desktop](apps/desktop/) 桌面端版本
 
 只需要在根目录中 `pnpm i` 即为所有子项目安转依赖，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
 
-而如果只需要开发或打包 web 端，可以运行 `pnpm install:web`，这将只安装 web 端的依赖，届时再运行 `pnpm dev:web` 即可。至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
+至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
 
 > 直接部署到 vercel 前，需要先去 vercel 的项目设置中将 Root Directory 设为 `apps/web`，才能正确识别项目并构建
-
-目前我还在学习着 electron 开发，桌面端部分还得再等等🥺原型什么的还在设计
 
 有关项目的进展路线等，可见 [项目的 Todo] 部分
 
@@ -104,4 +103,4 @@
 [赞助地址]: https://chilfish.top/sponsors
 [vercel]: https://vercel.com
 [使用教程]: https://docs.qq.com/doc/DTWttbXlMUGxZZnZq
-[actions]: https://github.com/Chilfish/Weibo-archiver/actions
+[actions]: https://github.com/Chilfish/Weibo-archiver/actions/workflows/beta-build.yml?query=branch:main+event:push+is:success
